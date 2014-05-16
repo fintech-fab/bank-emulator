@@ -1,0 +1,37 @@
+{
+	"name": "fintech-fab/bank-emulator",
+	"type": "service",
+	"description": "Bank Emulator for e-shop and payment services",
+	"license": "MIT",
+	"keywords": ["payments", "finance", "e-commerce", "bank"],
+	"homepage": "http://fintech-fab.ru/",
+	"authors": [
+		{
+			"name": "Mikhail Novikov",
+			"email": "mikhail.e.novikov@gmail.com"
+		},
+		{
+			"name": "Vladimir Yuldashev",
+			"email": "misterio92@gmail.com"
+		}
+	],
+	"require": {
+		"php": ">=5.3.0",
+		"laravel/framework": "4.1.*",
+		"iron-io/iron_mq": "dev-master"
+	},
+	"require-dev": {
+		"mockery/mockery": "dev-master"
+	},
+	"autoload": {
+		"classmap": [
+			"src/migrations",
+			"src/controllers",
+			"tests/BankEmulatorTestCase.php"
+		],
+		"psr-0": {
+			"FintechFab\\BankEmulator\\": "src/"
+		}
+	},
+	"minimum-stability": "dev"
+}
