@@ -5,7 +5,7 @@ Service gateway emulates the banking system for card payments.
 Simple and debug web interface inside.
 Install and use path /bank/emulator/demo in your web project.
 
-- PHP SDK: https://github.com/fintech-fab/money-transfer-emulator-sdk
+- PHP SDK: https://github.com/fintech-fab/bank-emulator-sdk
 - Public demo: Coming soon
 - 3DS-auth (analogue): Coming soon
 - Full debug web-form: Coming soon
