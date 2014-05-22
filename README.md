@@ -3,7 +3,12 @@ Bank Emulator
 
 Service gateway emulates the banking system for card payments.
 Simple and debug web interface inside.
+Install and use path /bank/emulator/demo in your web project.
 
+- PHP SDK: https://github.com/fintech-fab/money-transfer-emulator-sdk
+- Public demo: Coming soon
+- 3DS-auth (analogue): Coming soon
+- Full debug web-form: Coming soon
 
 # Requirements
 
@@ -26,7 +31,7 @@ Package only:
 
     {
         "require": {
-            "fintech-fab/bank-emulator": "dev-master",
+            "fintech-fab/bank-emulator": "dev-master"
         },
     }
 
@@ -37,7 +42,7 @@ Package dependency:
 	        "php": ">=5.3.0",
 	        "laravel/framework": "4.1.*",
 	        "iron-io/iron_mq": "dev-master"
-            "fintech-fab/bank-emulator": "dev-master",
+            "fintech-fab/bank-emulator": "dev-master"
         },
 	    "require-dev": {
 		    "phpunit/phpunit": "3.7.*",
