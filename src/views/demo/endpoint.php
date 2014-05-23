@@ -9,7 +9,7 @@ use FintechFab\BankEmulator\Components\Helpers\Views;
 ?>
 <div class="row container">
 
-	<div class="col-md-4">
+	<div class="col-xs-6">
 
 		<div class="well well-lg">
 
@@ -33,14 +33,13 @@ use FintechFab\BankEmulator\Components\Helpers\Views;
 		</div>
 
 		<div class="well well-lg">
-			<p><i class="fa fa-arrow-left"></i> <?= link_to($paymentParams['url'], 'Вернуться в магазин') ?></p>
-
+			<p><i class="fa fa-arrow-left"></i> <?= link_to($paymentParams['url'], 'Вернуться в магазин', array('class' => 'link-to-shop', 'target' => '_parent')) ?></p>
 		</div>
 
 	</div>
 
 
-	<div class="col-md-4">
+	<div class="col-xs-6">
 
 		<?php
 
@@ -48,7 +47,6 @@ use FintechFab\BankEmulator\Components\Helpers\Views;
 		echo Form::open(array(
 			'method' => 'POST',
 			'action' => 'ff-bank-em-endpoint-auth',
-			'class'  => 'post-payment',
 		));
 
 
@@ -95,7 +93,7 @@ use FintechFab\BankEmulator\Components\Helpers\Views;
 		?>
 
 		<div class="form-group">
-			<button class="btn btn-sm post-payment">Оплатить</button>
+			<?= Form::submit('Оплатить', array('class' => 'submit-hide')) ?>
 		</div>
 
 		<?php

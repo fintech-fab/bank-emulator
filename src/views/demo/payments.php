@@ -20,6 +20,7 @@ use FintechFab\BankEmulator\Models\Payment;
 			<th>rrn</th>
 			<th>irn</th>
 			<th>rc</th>
+			<th>pan</th>
 			<th>message</th>
 		</tr>
 		<?php foreach ($payments as $payment) { ?>
@@ -34,6 +35,7 @@ use FintechFab\BankEmulator\Models\Payment;
 				<td><?= $payment->rrn ?></td>
 				<td><?= $payment->irn ?></td>
 				<td><?= $payment->rc ?></td>
+				<td><?= $payment->pan ?></td>
 				<td><?= ProcessorException::getCodeMessage($payment->rc) ?></td>
 			</tr>
 		<?php } ?>

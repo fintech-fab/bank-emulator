@@ -16,9 +16,9 @@ use FintechFab\BankEmulator\Models\Terminal;
 	<div class="col-md-6">
 		<div class="panel panel-primary">
 			<div class="panel-heading">
-				<h3 class="panel-title">Ваш терминал</h3>
+				<h3 class="panel-title"><a href="#" class="dotted"><i class="fa fa-expand"></i> Ваш терминал</a></h3>
 			</div>
-			<div class="panel-body">
+			<div class="panel-body display-none">
 
 				<table class="table table-striped table-hover">
 					<tr>
@@ -37,7 +37,7 @@ use FintechFab\BankEmulator\Models\Terminal;
 						<td>Callback url</td>
 						<td>
 							<?php Views::text('url', $terminal->url, array(
-								'placeholder' => 'https://your.system.com/callback/',
+								'placeholder' => 'http://fintech-fab.dev/bank/emulator/demo/callback/',
 								'class'       => 'term-options',
 							)) ?>
 						</td>
@@ -68,9 +68,9 @@ use FintechFab\BankEmulator\Models\Terminal;
 	<div class="col-md-12">
 		<div class="panel panel-primary">
 			<div class="panel-heading">
-				<h3 class="panel-title">[<?= Type::AUTH ?>] Авторизация</h3>
+				<h3 class="panel-title"><a href="#" class="dotted"><i class="fa fa-expand"></i> [<?= Type::AUTH ?>] Авторизация</a></h3>
 			</div>
-			<div class="panel-body">
+			<div class="panel-body display-none">
 
 				<div class="col-md-4 post-auth">
 
@@ -167,6 +167,276 @@ use FintechFab\BankEmulator\Models\Terminal;
 					<button class="btn btn-sm post-auth">выполнить запрос</button>
 					<div style="padding: 5px 0;">
 						<pre class="post-auth" style="font-size: .8em;"></pre>
+					</div>
+				</div>
+
+
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row container">
+	<div class="col-md-12">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title"><a href="#" class="dotted"><i class="fa fa-expand"></i> [<?= Type::COMPLETE ?>] Завершение платежа</a></h3>
+			</div>
+			<div class="panel-body display-none">
+
+				<div class="col-md-4 post-complete">
+
+					<div class="form-group">
+						<?php
+						Views::label('amount', 'Сумма/валюта');
+						Views::text('amount', '123.45', array('size' => 10, 'style' => 'width: 100px; display: inline; margin-left: 10px;'));
+						Views::text('cur', 'RUB', array('size' => 3, 'style' => 'width: 50px; display: inline; margin-left: 10px;'));
+						?>
+					</div>
+
+					<div class="form-group">
+						<?php
+						Views::label('rrn');
+						Views::text('rrn', '');
+						?>
+					</div>
+
+					<div class="form-group">
+						<?php
+						Views::label('irn');
+						Views::text('irn', '');
+						?>
+					</div>
+
+					<div class="form-group">
+						<?php
+						Views::label('order');
+						Views::text('order', '123456');
+						?>
+					</div>
+
+					<div class="form-group">
+						<?php
+						Views::label('time');
+						Views::text('time', Time::ts());
+						?>
+					</div>
+
+					<div class="form-group">
+						<?php
+						Views::label('term');
+						Views::text('term', $terminal->id, array('size' => 10, 'style' => 'width: 100px; display: inline; margin-left: 10px;'));
+						?>
+					</div>
+
+					<div class="form-group">
+						<?php
+						Views::label('secret');
+						Views::text('secret', $terminal->secret);
+						?>
+					</div>
+
+				</div>
+
+				<div class="col-md-8">
+					<button class="btn btn-sm post-complete">выполнить запрос</button>
+					<div style="padding: 5px 0;">
+						<pre class="post-complete" style="font-size: .8em;"></pre>
+					</div>
+				</div>
+
+
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row container">
+	<div class="col-md-12">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title"><a href="#" class="dotted"><i class="fa fa-expand"></i> [<?= Type::REFUND ?>] Отмена платежа</a></h3>
+			</div>
+			<div class="panel-body display-none">
+
+				<div class="col-md-4 post-refund">
+
+					<div class="form-group">
+						<?php
+						Views::label('amount', 'Сумма/валюта');
+						Views::text('amount', '123.45', array('size' => 10, 'style' => 'width: 100px; display: inline; margin-left: 10px;'));
+						Views::text('cur', 'RUB', array('size' => 3, 'style' => 'width: 50px; display: inline; margin-left: 10px;'));
+						?>
+					</div>
+
+					<div class="form-group">
+						<?php
+						Views::label('rrn');
+						Views::text('rrn', '');
+						?>
+					</div>
+
+					<div class="form-group">
+						<?php
+						Views::label('irn');
+						Views::text('irn', '');
+						?>
+					</div>
+
+					<div class="form-group">
+						<?php
+						Views::label('order');
+						Views::text('order', '123456');
+						?>
+					</div>
+
+					<div class="form-group">
+						<?php
+						Views::label('time');
+						Views::text('time', Time::ts());
+						?>
+					</div>
+
+					<div class="form-group">
+						<?php
+						Views::label('term');
+						Views::text('term', $terminal->id, array('size' => 10, 'style' => 'width: 100px; display: inline; margin-left: 10px;'));
+						?>
+					</div>
+
+					<div class="form-group">
+						<?php
+						Views::label('secret');
+						Views::text('secret', $terminal->secret);
+						?>
+					</div>
+
+				</div>
+
+				<div class="col-md-8">
+					<button class="btn btn-sm post-refund">выполнить запрос</button>
+					<div style="padding: 5px 0;">
+						<pre class="post-refund" style="font-size: .8em;"></pre>
+					</div>
+				</div>
+
+
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="row container">
+	<div class="col-md-12">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title"><a href="#" class="dotted"><i class="fa fa-expand"></i> [<?= Type::SALE ?>] Прямая продажа</a></h3>
+			</div>
+			<div class="panel-body display-none">
+
+				<div class="col-md-4 post-sale">
+
+					<div class="form-group">
+						<?php
+						Views::label('pan');
+						Views::text('pan', BankCard::getValidCustomPan());
+						?>
+					</div>
+
+					<div class="form-group">
+						<?php
+						Views::label('year', 'Год/месяц/cvc');
+						Views::text('year', 15, array('size' => 2, 'style' => 'width: 35px; display: inline; margin-left: 10px;'));
+						Views::text('month', 12, array('size' => 2, 'style' => 'width: 35px; display: inline; margin-left: 10px;'));
+						Views::text('cvc', 777, array('size' => 3, 'style' => 'width: 50px; display: inline; margin-left: 10px;'));
+						?>
+					</div>
+
+					<div class="form-group">
+						<?php
+						Views::label('amount', 'Сумма/валюта');
+						Views::text('amount', '123.45', array('size' => 10, 'style' => 'width: 100px; display: inline; margin-left: 10px;'));
+						Views::text('cur', 'RUB', array('size' => 3, 'style' => 'width: 50px; display: inline; margin-left: 10px;'));
+						?>
+					</div>
+
+					<div class="form-group">
+						<?php
+						Views::label('to');
+						Views::text('to', BankCard::getValidCustomPan());
+						?>
+					</div>
+
+					<div class="form-group">
+						<?php
+						Views::label('order');
+						Views::text('order', '123456');
+						?>
+					</div>
+
+					<div class="form-group">
+						<?php
+						Views::label('name');
+						Views::text('name', 'Fine order');
+						?>
+					</div>
+
+					<div class="form-group">
+						<?php
+						Views::label('desc');
+						Views::text('desc', 'Fine order Description');
+						?>
+					</div>
+
+					<div class="form-group">
+						<?php
+						Views::label('url');
+						Views::text('url', URL::route('ff-bank-em-shop'));
+						?>
+					</div>
+
+					<div class="form-group">
+						<?php
+						Views::label('email');
+						Views::text('email', 'bank@example.com');
+						?>
+					</div>
+
+					<div class="form-group">
+						<?php
+						Views::label('time');
+						Views::text('time', Time::ts());
+						?>
+					</div>
+
+					<div class="form-group">
+						<?php
+						Views::label('term');
+						Views::text('term', $terminal->id, array('size' => 10, 'style' => 'width: 100px; display: inline; margin-left: 10px;'));
+						?>
+					</div>
+
+					<div class="form-group">
+						<?php
+						Views::label('secret');
+						Views::text('secret', $terminal->secret);
+						?>
+					</div>
+
+					<div class="form-group">
+						<?php
+						Views::label('back');
+						Views::text('back', URL::route('ff-bank-em-shop'));
+						?>
+					</div>
+
+				</div>
+
+				<div class="col-md-8">
+					<button class="btn btn-sm post-sale">выполнить запрос</button>
+					<div style="padding: 5px 0;">
+						<pre class="post-sale" style="font-size: .8em;"></pre>
 					</div>
 				</div>
 

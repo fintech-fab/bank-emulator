@@ -6,6 +6,7 @@ namespace FintechFab\BankEmulator\Controllers;
 use App;
 use Config;
 use Controller;
+use Crypt;
 use FintechFab\BankEmulator\Components\Helpers\Time;
 use FintechFab\BankEmulator\Components\Helpers\Views;
 use FintechFab\BankEmulator\Components\Processor\Processor;
@@ -119,7 +120,13 @@ class DemoController extends Controller
 	 */
 	public function callback()
 	{
-		$input = $this->getVerifiedInput('callback', Input::get('type'), Input::all());
+
+		Log::info('callback.url.pull', array(
+			'message'  => 'Request callback url',
+			'rawInput' => Input::all(),
+		));
+
+		$input = $this->getVerifiedInput('callback', Input::get('type'), Input::all(), true);
 		if ($input) {
 			// your business processing
 		}
@@ -265,16 +272,15 @@ class DemoController extends Controller
 		$paymentParams = $this->getPaymentFields($input);
 		Secure::sign($paymentParams, $type, $term->secret);
 
-		$this->make('endpoint', compact('paymentParams'));
+		$this->layout = View::make('ff-bank-em::layouts.endpoint');
 
-		return null;
+		return $this->layout->nest('content', 'ff-bank-em::demo.endpoint', compact('paymentParams'));
 
 	}
 
 
 	/**
-	 * Production gate
-	 * Public access
+	 * Endpoint 'payment' request
 	 */
 	public function endpointAuth()
 	{
@@ -299,22 +305,134 @@ class DemoController extends Controller
 				$errorMessage = ProcessorException::getCodeMessage($response->rc);
 			}
 
+			// need auth
+			if ($response->auth()) {
+				return Redirect::to($response->auth());
+			}
+
 		} catch (ProcessorException $e) {
 			$errorMessage = $e->getMessage();
 		}
 
+
 		if (!$errorMessage) {
-			return Redirect::to(
-				Views::url($input['back'],
+			return Views::reload(
+				Views::url(
+					$input['back'],
 					array('resultBankEmulatorPayment' => 'success')
-				));
+				),
+				array(
+					'Платеж принят!',
+					'Ждите перехода в интернет-магазин',
+				),
+				'success'
+			);
 		}
 
-		return Redirect::route('ff-bank-em-error')->with(array(
-			'errorMessage' => $errorMessage,
-			'errorUrl'     => Views::url($input['back'], array('resultBankEmulatorPayment' => 'error')),
-			'errorUrlName' => 'вернуться в магазин',
-		));
+		return Views::reload(
+			Views::url(
+				$input['back'],
+				array('resultBankEmulatorPayment' => 'error')
+			),
+			array(
+				$errorMessage,
+				'Ждите перехода в интернет-магазин',
+			),
+			'danger'
+		);
+
+	}
+
+	/**
+	 * Endpoint result authorization
+	 */
+	public function endpointAuthResult()
+	{
+
+		$result = Input::get('result');
+		$result = Crypt::decrypt($result);
+		$result = explode(';', $result);
+		$payment = null;
+		$paymentId = null;
+
+		if (!empty($result[0])) {
+			$paymentId = $result[0];
+			$payment = Processor::findPayment($paymentId);
+		}
+
+		if (!$payment) {
+			App::abort(406, 'Unrecognized Payment Information');
+		}
+
+
+
+		$processor = Processor::makePayment($paymentId);
+		$url = $processor->getBackUrl();
+
+		// success authorization
+		if (!empty($result[1]) && $result[1] === 'OK') {
+
+			$processor->setPaymentSuccessAuthorisation($paymentId);
+
+			return Views::reload(
+				Views::url(
+					$url,
+					array('resultBankEmulatorPayment' => 'success')
+				),
+				array(
+					'Платеж принят и авторизован',
+					'Ждите перехода в интернет-магазин',
+				),
+				'success'
+			);
+		}
+
+		// fail
+		$processor->setPaymentErrorAuthorisation();
+
+		return Views::reload(
+			Views::url(
+				$url,
+				array('resultBankEmulatorPayment' => 'error')
+			),
+			array(
+				'Error Payment Authorization',
+				'Ждите перехода в интернет-магазин',
+			),
+			'danger'
+		);
+
+	}
+
+	/**
+	 * Payment authorization (check code)
+	 *
+	 */
+	public function auth($payment, $url)
+	{
+
+		// decrypt payment identify
+		$paymentId = Crypt::decrypt($payment);
+
+		// check request
+		$this->payAuthValidateRequest($paymentId, $url);
+
+		// check payment status
+		$processor = Processor::makePayment($paymentId);
+		if(!$processor->isAuthStatus()){
+			App::abort(406, 'Unrecognized Payment Status');
+		}
+
+		// check input hint value and go back with result
+		$redirect = $this->payAuthProcessHint($paymentId, $url);
+		if ($redirect) {
+			return $redirect;
+		}
+
+		$this->layout = View::make('ff-bank-em::layouts.endpoint');
+		$this->make('authorization');
+
+		return null;
 
 	}
 
@@ -354,17 +472,20 @@ class DemoController extends Controller
 	 *
 	 * Check, clear and verify input params
 	 *
-	 * @param $action
-	 * @param $type
-	 * @param $input
+	 * @param string $action
+	 * @param string $type
+	 * @param array  $input
+	 * @param bool   $disableClear
 	 *
 	 * @return null
 	 */
-	private function getVerifiedInput($action, $type, $input)
+	private function getVerifiedInput($action, $type, $input, $disableClear = false)
 	{
-
-		$input = Type::clearInput($type, $input);
-		$baseInput = $input;
+		$rawInput = $input;
+		if(!$disableClear){
+			$input = Type::clearInput($type, $input);
+		}
+		$clearInput = $input;
 		$termId = $input['term'];
 		$term = Terminal::find($termId);
 		$sign = $input['sign'];
@@ -375,22 +496,25 @@ class DemoController extends Controller
 
 		if (!$isCorrect) {
 
-			Log::warning($action . 'pull', array(
-				'message' => 'Invalid signature',
-				'sign'    => $input['sign'],
-				'input'   => Input::all(),
+			Log::warning($action . '.pull', array(
+				'message'     => 'Invalid signature',
+				'rawInput'    => $rawInput,
+				'clearInput'  => $clearInput,
+				'resultInput' => $input,
 			));
 
 			return null;
 
 		}
 
-		Log::info($action . 'pull', array(
-			'message' => 'Correct signature',
-			'input'   => Input::all(),
+		Log::info($action . '.pull', array(
+			'message'     => 'Correct signature',
+			'rawInput'    => $rawInput,
+			'clearInput'  => $clearInput,
+			'resultInput' => $input,
 		));
 
-		return $baseInput;
+		return $clearInput;
 
 	}
 
@@ -402,14 +526,7 @@ class DemoController extends Controller
 	 */
 	private function makeProcessor($type, $input)
 	{
-
-		$opType = new Type($type, $input);
-
-		return App::make(
-			'FintechFab\BankEmulator\Components\Processor\Processor',
-			array($opType)
-		);
-
+		return Processor::make($type, $input);
 	}
 
 	/**
@@ -490,6 +607,64 @@ class DemoController extends Controller
 		}
 
 		return $params;
+
+	}
+
+
+	/**
+	 *
+	 * Check authorization code
+	 *
+	 * @param integer $paymentId
+	 * @param string  $url
+	 *
+	 * @return \Illuminate\Http\RedirectResponse|null
+	 */
+	private function payAuthProcessHint($paymentId, $url)
+	{
+
+		$hint = Input::get('hint');
+
+		// check hint static success value
+		if (!empty($hint)) {
+			if ($hint === '12345') {
+				$url = Views::url($url, array('result' => Crypt::encrypt($paymentId . ';OK')));
+			} else {
+				$url = Views::url($url, array('result' => Crypt::encrypt($paymentId . ';KO')));
+			}
+
+			return Redirect::to($url);
+		}
+
+		return null;
+
+	}
+
+	/**
+	 *
+	 * Check authorization request parameters
+	 *
+	 * @param integer $paymentId
+	 * @param string  $url
+	 *
+	 */
+	private function payAuthValidateRequest($paymentId, $url)
+	{
+
+		$validator = Validator::make(
+			array(
+				'payment' => $paymentId,
+				'url'     => $url,
+			),
+			array(
+				'payment' => 'required|numeric',
+				'url'     => 'required|url',
+			)
+		);
+
+		if (!$validator->passes() || !$paymentId) {
+			App::abort(406, 'Unrecognized Access Request');
+		}
 
 	}
 

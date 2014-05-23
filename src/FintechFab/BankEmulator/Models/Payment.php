@@ -42,6 +42,7 @@ use Eloquent;
  * @method static Payment  whereStatus($status)
  * @method static Payment  orderBy($column, $direction)
  * @method static Payment  first()
+ * @method static Payment  find($id)
  */
 class Payment extends Eloquent
 {

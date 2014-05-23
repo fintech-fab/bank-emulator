@@ -22,7 +22,7 @@ class Processor
 	private $term;
 
 	/**
-	 * @var \FintechFab\BankEmulator\Components\Processor\Payment
+	 * @var Payment
 	 */
 	private $payment;
 
@@ -35,6 +35,64 @@ class Processor
 	{
 		$this->type = $type;
 		$this->term = $term;
+	}
+
+	/**
+	 * @param string $type
+	 * @param array $input
+	 *
+	 * @return Processor
+	 */
+	public static function make($type, $input)
+	{
+		$opType = new Type($type, $input);
+		return App::make(
+			'FintechFab\BankEmulator\Components\Processor\Processor',
+			array($opType)
+		);
+	}
+
+	/**
+	 * @param $id
+	 *
+	 * @return Processor
+	 */
+	public static function makePayment($id)
+	{
+
+		$payment = self::findPayment($id);
+		$opType = new Type($payment->type, $payment->toArray());
+
+		/**
+		 * @var Processor $processor
+		 */
+		$processor = App::make(
+			'FintechFab\BankEmulator\Components\Processor\Processor',
+			array($opType)
+		);
+		$processor->setPayment($payment);
+
+		return $processor;
+
+	}
+
+	/**
+	 * @param $payment
+	 */
+	public function setPayment($payment)
+	{
+		/**
+		 * @var Payment $payment
+		 */
+		$paymentComponent = App::make('FintechFab\BankEmulator\Components\Processor\Payment', array(
+			$this->type->sid(),
+			$this->type->inputs()
+		));
+
+		$this->payment = $paymentComponent;
+		$this->term = $this->term->newInstance()->find($this->payment->item()->term);
+		$this->payment->setPayment($payment);
+
 	}
 
 	private function run()
@@ -121,6 +179,9 @@ class Processor
 	private function auth()
 	{
 		$data = $this->getResponseData();
+		if ($this->payment->getAuthUrl()) {
+			$data['auth'] = $this->payment->getAuthUrl();
+		}
 		$this->response = new Response($data, Type::AUTH, $this->term->secret);
 
 		return $this->response;
@@ -133,6 +194,9 @@ class Processor
 	{
 
 		$data = $this->getResponseData();
+		if ($this->payment->getAuthUrl()) {
+			$data['auth'] = $this->payment->getAuthUrl();
+		}
 		$this->response = new Response($data, Type::SALE, $this->term->secret);
 
 		return $this->response;
@@ -146,6 +210,9 @@ class Processor
 	{
 
 		$data = $this->getResponseData();
+		if ($this->payment->getAuthUrl()) {
+			$data['auth'] = $this->payment->getAuthUrl();
+		}
 		$this->response = new Response($data, Type::PAYMENT, $this->term->secret);
 
 		return $this->response;
@@ -182,6 +249,40 @@ class Processor
 	{
 		return $this->payment->item();
 	}
+
+
+
+
+
+	public static function findPayment($id)
+	{
+		return Payment::findById($id);
+	}
+
+	public function getBackUrl()
+	{
+		return $this->payment->item()->url;
+	}
+
+	public function setPaymentSuccessAuthorisation()
+	{
+		$this->payment->setAuthSuccess();
+		$this->sendCallbackUrl();
+	}
+
+	public function setPaymentErrorAuthorisation()
+	{
+		$this->payment->setAuthFail();
+		$this->sendCallbackUrl();
+	}
+
+	public function isAuthStatus()
+	{
+		return $this->payment->isAuthStatus();
+	}
+
+
+
 
 	private function getResponseData()
 	{

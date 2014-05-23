@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: m.novikov
- * Date: 13.05.14
- * Time: 12:10
- */
 
 namespace FintechFab\BankEmulator\Components\Processor;
 

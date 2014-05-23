@@ -27,7 +27,7 @@ class CallbackQueue
 
 			if (!$doSuccess) {
 				Log::warning('callback.push.url', array(
-					'message' => 'callback push failed',
+					'message' => 'callback push failed to ' . $data['url'],
 					'order'   => $data['data']['order'],
 				));
 			}

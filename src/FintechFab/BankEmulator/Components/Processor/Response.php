@@ -6,6 +6,7 @@ namespace FintechFab\BankEmulator\Components\Processor;
 /**
  * @property string $code
  * @property string $rc
+ * @property string $auth
  */
 class Response
 {
@@ -60,6 +61,13 @@ class Response
 	public function data()
 	{
 		return $this->data;
+	}
+
+	public function auth()
+	{
+		return isset($this->data['auth'])
+			? $this->data['auth']
+			: null;
 	}
 
 }

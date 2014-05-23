@@ -7,6 +7,63 @@ use FintechFab\BankEmulator\Components\Processor\Type;
 
 ?>
 
+<div class="row container">
+	<div class="col-md-7">
+
+		<h2>About</h2>
+
+		<p>Это имитация банковского шлюза (или ipsp), где есть стандартные процедуры выполнения платежей по картам:</p>
+
+		<ul>
+			<li>Авторизационный платеж<br> &mdash; <i>
+					<small>Проверка возможности списания средств с карты Клиента</small>
+				</i></li>
+			<li>Завершение продажи<br> &mdash; <i>
+					<small>Исполнение Авторизационного платежа</small>
+				</i></li>
+			<li>Прямая продажа<br> &mdash; <i>
+					<small>Списание средств с карты в пользу Продавца, либо перевод на другую карту</small>
+				</i></li>
+			<li>Отмена платежа<br> &mdash; <i>
+					<small>Для возврата средств или отмены Авторизационного платежа</small>
+				</i>
+			</li>
+			<li>Онлайн-платеж<br> &mdash; <i>
+					<small>Перенаправление Клиента в Банк для оплаты товаров или услуг</small>
+				</i></li>
+			<li>3DS - аналог<br> &mdash; <i>
+					<small>Авторизации платежа владельцем карты</small>
+				</i></li>
+		</ul>
+
+	</div>
+
+	<div class="col-md-5">
+
+		<h2>Profit</h2>
+
+		<p>Пользуйтесь шлюзом, чтобы отладить/протестировать платежные процессы в вашем проекте.</p>
+
+		<p>Чтобы начать, <a href="/registration">авторизуйтесь здесь</a>, потом
+			<a href="<?= URL::route('ff-bank-em-term') ?>">здесь</a> вам будет сгенерирован банковский терминал с
+			id-шником и ключом.</p>
+
+		<p>Там же находятся формы для отладки шлюза, а <a href="<?= URL::route('ff-bank-em-shop') ?>">здесь</a> - форма
+			для онлайн-платежа.</p>
+
+		<h2>Tags</h2>
+
+		<p>
+			<a href="http://wiki.fintech-fab.ru/doku.php/lib:emulators:bank">Документация</a>,
+			<a href="https://github.com/fintech-fab/money-transfer-emulator-sdk">PHP SDK</a>,
+			<a href="https://github.com/fintech-fab/bank-emulator">GitHub</a>, <a href="http://laravel.com">Laravel</a>
+
+		</p>
+
+	</div>
+
+</div>
+
 
 <div class="row container">
 	<div class="col-md-12">

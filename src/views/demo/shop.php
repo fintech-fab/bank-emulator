@@ -109,3 +109,14 @@ if ($statusSuccess || $statusError) {
 		</div>
 	</div>
 </div>
+
+
+<div class="modal" id="pay-online">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+				<iframe style="width: 100%; height: 100%; border: 0;" src=""></iframe>
+			</div>
+		</div>
+	</div>
+</div>

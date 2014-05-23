@@ -7,8 +7,8 @@ Install and use path /bank/emulator/demo in your web project.
 
 - PHP SDK: https://github.com/fintech-fab/bank-emulator-sdk
 - Public demo: Coming soon
-- 3DS-auth (analogue): Coming soon
-- Full debug web-form: Coming soon
+- 3DS-auth (analogue): included
+- Full debug web-form: included
 
 # Requirements
 
@@ -67,14 +67,16 @@ Add service provider to `config/app.php`:
 
 Add to `config/#env#/queue.php`:
 
-	'connections' => array(
-		'ff-bank-em' => array(
-			'driver'  => 'iron',
-			'project' => 'your-iron-project-id',
-			'token'   => 'your-iron-token',
-			'queue'   => 'your-iron-queue',
-		),
+```PHP
+'connections' => array(
+	'ff-bank-em' => array(
+		'driver'  => 'iron',
+		'project' => 'your-iron-project-id',
+		'token'   => 'your-iron-token',
+		'queue'   => 'your-iron-queue',
 	),
+),
+```
 
 Run the queue worker:
 
@@ -84,18 +86,20 @@ Run the queue worker:
 
 Add to `config/#env#/database.php`:
 
-	'connections' => array(
-		'ff-bank-em'  => array(
-			'driver'    => 'mysql',
-			'host'      => 'your-mysql-host',
-			'database'  => 'your-mysql-database',
-			'username'  => 'root',
-			'password'  => 'your-mysql-password',
-			'charset'   => 'utf8',
-			'collation' => 'utf8_unicode_ci',
-			'prefix'    => 'your-table-prefix',
-		),
+```PHP
+'connections' => array(
+	'ff-bank-em'  => array(
+		'driver'    => 'mysql',
+		'host'      => 'your-mysql-host',
+		'database'  => 'your-mysql-database',
+		'username'  => 'root',
+		'password'  => 'your-mysql-password',
+		'charset'   => 'utf8',
+		'collation' => 'utf8_unicode_ci',
+		'prefix'    => 'your-table-prefix',
 	),
+),
+```
 
 ## Migrations
 
@@ -123,15 +127,16 @@ Add to `config/#env#/app.php`:
 
 Change `start/global.php` (`Application Error Logger` section):
 
-	Log::useFiles(storage_path() . '/logs/laravel.log');
+```PHP
+Log::useFiles(storage_path() . '/logs/laravel.log');
 
-	if (Config::get('app.logglykey') && Config::get('app.logglytag')) {
-		$handler = new \Monolog\Handler\LogglyHandler(Config::get('app.logglykey'), \Monolog\Logger::DEBUG);
-		$handler->setTag(Config::get('app.logglytag'));
-		$logger = Log::getMonolog();
-		$logger->pushHandler($handler);
-	}
-
+if (Config::get('app.logglykey') && Config::get('app.logglytag')) {
+	$handler = new \Monolog\Handler\LogglyHandler(Config::get('app.logglykey'), \Monolog\Logger::DEBUG);
+	$handler->setTag(Config::get('app.logglytag'));
+	$logger = Log::getMonolog();
+	$logger->pushHandler($handler);
+}
+```
 
 ## Development How to
 

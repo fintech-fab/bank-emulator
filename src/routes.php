@@ -41,13 +41,21 @@ Route::group(
 			'uses' => 'DemoController@gateway'
 		));
 
-		Route::post('endpoint', array(
+		Route::any('endpoint', array(
 			'as'   => 'ff-bank-em-endpoint',
 			'uses' => 'DemoController@endpoint'
 		));
 		Route::post('endpoint/auth', array(
 			'as'   => 'ff-bank-em-endpoint-auth',
 			'uses' => 'DemoController@endpointAuth'
+		));
+		Route::get('endpoint/auth/result', array(
+			'as'   => 'ff-bank-em-endpoint-auth-result',
+			'uses' => 'DemoController@endpointAuthResult'
+		));
+		Route::any('pay/auth/{payment}/{back}', array(
+			'as'   => 'ff-bank-em-pay-auth',
+			'uses' => 'DemoController@auth'
 		));
 		Route::get('shop', array(
 			'before' => 'ff-bank-em-auth|ff-bank-em-term',

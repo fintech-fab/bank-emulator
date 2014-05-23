@@ -5,6 +5,7 @@ namespace FintechFab\BankEmulator\Components\Helpers;
 
 use FintechFab\BankEmulator\Components\Processor\Input;
 use Form;
+use View;
 
 class Views
 {
@@ -64,6 +65,11 @@ class Views
 
 		return $url;
 
+	}
+
+	public static function reload($url, $message, $status)
+	{
+		return View::make('ff-bank-em::demo.reload', compact('url', 'message', 'status'));
 	}
 
 

@@ -36,7 +36,7 @@ if (empty($errorUrlName)) {
 				<?= $errorMessage ?>
 				<?php
 				if ($errorUrl) {
-					echo '(' . link_to($errorUrl, $errorUrlName) . ')';
+					echo '(' . link_to($errorUrl, $errorUrlName, array('target' => '_parent')) . ')';
 				}
 				?>
 			</div>

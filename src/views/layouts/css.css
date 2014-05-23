@@ -1,0 +1,18 @@
+img.logo-icon {
+	width: 26px;
+	height: 26px;
+}
+.display-none {
+	display: none;
+}
+.dotted, .dotted:hover {
+	text-decoration: none;
+	border-bottom: 1px dotted;
+}
+#pay-online .modal-dialog,
+#pay-online .modal-content {
+	width: 900px;
+}
+#pay-online .modal-body {
+	height: 600px;
+}

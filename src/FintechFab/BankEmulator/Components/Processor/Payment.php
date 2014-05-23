@@ -2,8 +2,10 @@
 
 namespace FintechFab\BankEmulator\Components\Processor;
 
+use Crypt;
 use FintechFab\BankEmulator\Components\Helpers\Time;
 use FintechFab\BankEmulator\Models\Payment as PaymentModel;
+use URL;
 
 class Payment
 {
@@ -13,11 +15,58 @@ class Payment
 	 */
 	private $payment;
 
+	/**
+	 * @var string auth url
+	 */
+	private $auth;
+
 	public function __construct($type, $data, PaymentModel $payment)
 	{
 		$data['type'] = $type;
 		$data['time'] = Time::dt($data['time']);
+
 		$this->payment = $payment->newInstance($data);
+	}
+
+	/**
+	 * @param $id
+	 *
+	 * @return PaymentModel
+	 */
+	public static function findById($id)
+	{
+		return PaymentModel::find($id);
+	}
+
+	/**
+	 * @param $id
+	 *
+	 * @return string
+	 */
+	public static function getBackUrl($id)
+	{
+		$payment = self::findById($id);
+		return $payment->url;
+	}
+
+	public function setAuthSuccess()
+	{
+		$this->payment->status = Status::SUCCESS;
+		$this->payment->save();
+	}
+
+	public function setAuthFail()
+	{
+		$this->payment->status = Status::ERROR;
+		$this->payment->save();
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function isAuthStatus()
+	{
+		return ($this->payment->status == Status::AUTHORIZATION);
 	}
 
 	/**
@@ -36,6 +85,14 @@ class Payment
 		}
 		$this->payment->status = Status::PROCESSED;
 		$this->payment->save();
+	}
+
+	/**
+	 * End processes, set exist payment
+	 */
+	public function setPayment($payment)
+	{
+		$this->payment = $payment;
 	}
 
 	/**
@@ -98,8 +155,13 @@ class Payment
 			return;
 		}
 
+		// auth
+		$this->doDetectAuth();
+
 		// approved
-		$this->payment->status = Status::SUCCESS;
+		if($this->payment->status != Status::AUTHORIZATION){
+			$this->payment->status = Status::SUCCESS;
+		}
 		$this->payment->rc = '00';
 		$this->payment->approval = mt_rand(100000, 999999);
 		$this->payment->save();
@@ -313,6 +375,25 @@ class Payment
 
 		return $payment;
 
+	}
+
+	/**
+	 * Init url payment authorization
+	 */
+	private function doDetectAuth()
+	{
+		if ($this->payment->cvc == '333') {
+			$this->auth = Url::route('ff-bank-em-pay-auth', array(
+				'payment' => Crypt::encrypt($this->payment->id),
+				'back'    => urlencode(Url::route('ff-bank-em-endpoint-auth-result')),
+			));
+			$this->payment->status = Status::AUTHORIZATION;
+		}
+	}
+
+	public function getAuthUrl()
+	{
+		return $this->auth;
 	}
 
 }

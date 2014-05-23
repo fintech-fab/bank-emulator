@@ -5,6 +5,7 @@
 	"license": "MIT",
 	"keywords": ["payments", "finance", "e-commerce", "bank"],
 	"homepage": "http://fintech-fab.ru/",
+	"version": "0.2",
 	"authors": [
 		{
 			"name": "Mikhail Novikov",
