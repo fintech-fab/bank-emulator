@@ -110,6 +110,52 @@ if ($statusSuccess || $statusError) {
 	</div>
 </div>
 
+<?php
+
+
+if (
+	class_exists('\FintechFab\BankEmulatorSdk\OnlineFormWidget') &&
+	class_exists('\FintechFab\BankEmulatorSdk\Config')
+) {
+	?>
+
+	<div class="row container">
+		<div class="col-md-12">
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h3 class="panel-title">[<?= Type::PAYMENT ?>] Платеж одной кнопкой (Bank Emulator SDK)</h3>
+				</div>
+				<div class="panel-body">
+					<?php
+
+					\FintechFab\BankEmulatorSdk\Config::setAll(array(
+						'terminalId'  => $terminal->id,
+						'secretKey'   => $terminal->secret,
+						'endpointUrl' => URL::route('ff-bank-em-endpoint'),
+						'currency'    => 'RUB',
+						'callbackUrl' => URL::current(),
+					));
+
+					\FintechFab\BankEmulatorSdk\OnlineFormWidget::render(12345, 123.45, 'Example', 'Example Online Order');
+
+					$gateway = new \FintechFab\BankEmulatorSdk\Gateway();
+					$fields = $gateway->endpoint(array(
+						'orderId'     => 12345,
+						'orderAmount' => 123.45,
+						'orderName'   => 'Example',
+						'orderDesc'   => 'Example Online Order',
+					));
+
+					?>
+
+				</div>
+			</div>
+		</div>
+	</div>
+<?php
+}
+
+?>
 
 <div class="modal" id="pay-online">
 	<div class="modal-dialog">
