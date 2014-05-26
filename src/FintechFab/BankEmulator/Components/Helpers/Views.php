@@ -3,8 +3,10 @@
 namespace FintechFab\BankEmulator\Components\Helpers;
 
 
+use Config;
 use FintechFab\BankEmulator\Components\Processor\Input;
 use Form;
+use URL;
 use View;
 
 class Views
@@ -70,6 +72,15 @@ class Views
 	public static function reload($url, $message, $status)
 	{
 		return View::make('ff-bank-em::demo.reload', compact('url', 'message', 'status'));
+	}
+
+	public static function link2Sign()
+	{
+		$url = Config::get('ff-bank-em::ff.login.link');
+
+		return self::url($url, array(
+			'back' => urlencode(URL::current()),
+		));
 	}
 
 

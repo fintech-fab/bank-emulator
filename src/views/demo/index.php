@@ -1,3 +1,8 @@
+<?php
+
+use FintechFab\BankEmulator\Components\Helpers\Views;
+
+?>
 <div class="row container">
 	<div class="col-md-7">
 
@@ -37,7 +42,7 @@
 		<p>Пользуйтесь шлюзом, чтобы отладить/протестировать платежные процессы в вашем проекте на "тестовой" платежной
 			системе.</p>
 
-		<p>Чтобы начать, <a href="/registration">авторизуйтесь здесь</a>, потом
+		<p>Чтобы начать, <a href="<?= Views::link2Sign() ?>">авторизуйтесь здесь</a>, потом
 			<a href="<?= URL::route('ff-bank-em-term') ?>">здесь</a> вам будет сгенерирован банковский терминал с
 			id-шником и ключом.</p>
 

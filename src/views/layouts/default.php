@@ -1,5 +1,8 @@
 <?php
 
+
+use FintechFab\BankEmulator\Components\Helpers\Views;
+
 if (empty($content)) {
 	return;
 }
@@ -36,6 +39,18 @@ $logo = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAB
 			<li><a class="top-link" href="<?= URL::route('ff-bank-em-term') ?>">Term</a></li>
 			<li><a class="top-link" href="<?= URL::route('ff-bank-em-shop') ?>">E-shop</a></li>
 			<li><a class="top-link" href="<?= URL::route('ff-bank-em-payments') ?>">Payments</a></li>
+			<?php
+			if (Config::get('ff-bank-em::ff.login.enabled')) {
+				if (Config::get('ff-bank-em::user_id') > 0) {
+					?>
+					<li><a class="top-link" href="/logout"><i class="fa fa-sign-out"></i> Logout</a></li><?php
+				} else {
+					?>
+					<li><a class="top-link" href="<?= Views::link2Sign() ?>"><i class="fa fa-sign-in"></i> Sign-in</a>
+					</li><?php
+				}
+			}
+			?>
 		</ul>
 	</div>
 
