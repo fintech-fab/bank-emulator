@@ -24,12 +24,15 @@ $logo = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAB
 <div class="navbar navbar-default">
 
 	<div class="navbar-header">
-		<a class="navbar-brand" href="<?= URL::route('ff-bank-em-demo') ?>"><i><img class="logo-icon" src="<?=$logo?>"></i>
+		<a class="navbar-brand" href="<?= URL::route('ff-bank-em-demo') ?>"><i><img class="logo-icon" src="<?= $logo ?>"></i>
 			Bank Emulator</a>
 	</div>
 
 	<div class="navbar-collapse collapse navbar-responsive-collapse">
 		<ul class="nav navbar-nav">
+			<li><a class="top-link" href="<?= URL::route('ff-bank-em-demo') ?>">About</a></li>
+			<li><a class="top-link" href="<?= URL::route('ff-bank-em-sdk') ?>">SDK</a></li>
+			<li><a class="top-link" href="<?= URL::route('ff-bank-em-docs') ?>">Documentation</a></li>
 			<li><a class="top-link" href="<?= URL::route('ff-bank-em-term') ?>">Term</a></li>
 			<li><a class="top-link" href="<?= URL::route('ff-bank-em-shop') ?>">E-shop</a></li>
 			<li><a class="top-link" href="<?= URL::route('ff-bank-em-payments') ?>">Payments</a></li>

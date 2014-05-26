@@ -4,8 +4,8 @@
 	"description": "Bank Emulator for e-shop and payment services",
 	"license": "MIT",
 	"keywords": ["payments", "finance", "e-commerce", "bank"],
-	"homepage": "http://fintech-fab.ru/",
-	"version": "0.2",
+	"homepage": "http://fintech-fab.ru/bank/emulator/demo",
+	"version": "0.3",
 	"authors": [
 		{
 			"name": "Mikhail Novikov",

@@ -14,6 +14,14 @@ Route::group(
 			'as'   => 'ff-bank-em-demo',
 			'uses' => 'DemoController@index',
 		));
+		Route::get('docs', array(
+			'as'   => 'ff-bank-em-docs',
+			'uses' => 'DemoController@docs',
+		));
+		Route::get('sdk', array(
+			'as'   => 'ff-bank-em-sdk',
+			'uses' => 'DemoController@sdk',
+		));
 		Route::get('error', array(
 			'as'   => 'ff-bank-em-error',
 			'uses' => 'DemoController@error',
@@ -69,6 +77,7 @@ Route::group(
 		));
 
 		Route::post('callback', array(
+			'as'   => 'ff-bank-em-callback',
 			'uses' => 'DemoController@callback'
 		));
 

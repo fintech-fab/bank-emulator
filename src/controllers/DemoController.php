@@ -35,6 +35,16 @@ class DemoController extends Controller
 		$this->make('index');
 	}
 
+	public function docs()
+	{
+		$this->make('docs');
+	}
+
+	public function sdk()
+	{
+		$this->make('sdk');
+	}
+
 	/**
 	 * Terminal info
 	 * auto-create new term if not exists
@@ -365,7 +375,6 @@ class DemoController extends Controller
 		}
 
 
-
 		$processor = Processor::makePayment($paymentId);
 		$url = $processor->getBackUrl();
 
@@ -419,7 +428,7 @@ class DemoController extends Controller
 
 		// check payment status
 		$processor = Processor::makePayment($paymentId);
-		if(!$processor->isAuthStatus()){
+		if (!$processor->isAuthStatus()) {
 			App::abort(406, 'Unrecognized Payment Status');
 		}
 
@@ -482,7 +491,7 @@ class DemoController extends Controller
 	private function getVerifiedInput($action, $type, $input, $disableClear = false)
 	{
 		$rawInput = $input;
-		if(!$disableClear){
+		if (!$disableClear) {
 			$input = Type::clearInput($type, $input);
 		}
 		$clearInput = $input;
