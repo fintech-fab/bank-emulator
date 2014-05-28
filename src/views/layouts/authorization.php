@@ -4,7 +4,7 @@ if (empty($content)) {
 	return;
 }
 
-$title = 'Bank Emulator Endpoint';
+$title = 'Bank Emulator Authorization Center';
 
 ?>
 <html lang="ru">

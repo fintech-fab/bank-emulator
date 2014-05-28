@@ -438,7 +438,7 @@ class DemoController extends Controller
 			return $redirect;
 		}
 
-		$this->layout = View::make('ff-bank-em::layouts.endpoint');
+		$this->layout = View::make('ff-bank-em::layouts.authorization');
 		$this->make('authorization');
 
 		return null;

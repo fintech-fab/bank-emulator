@@ -54,16 +54,22 @@ use FintechFab\BankEmulator\Components\Helpers\Views;
 
 		<div class="form-group">
 			<?php
-			Views::label('pan');
+			Views::label('pan', 'Card number');
 			Views::text('pan', '');
 			?>
 		</div>
 
 		<div class="form-group">
 			<?php
-			Views::label('year', 'Год/месяц/cvc');
+			Views::label('year', 'Expored date YY/MM');
 			Views::text('year', '', array('size' => 2, 'style' => 'width: 35px; display: inline; margin-left: 10px;'));
 			Views::text('month', '', array('size' => 2, 'style' => 'width: 35px; display: inline; margin-left: 10px;'));
+			?>
+		</div>
+
+		<div class="form-group">
+			<?php
+			Views::label('cvc', 'CVV/CVC2 code');
 			Views::text('cvc', '', array('size' => 3, 'style' => 'width: 50px; display: inline; margin-left: 10px;'));
 			?>
 		</div>
