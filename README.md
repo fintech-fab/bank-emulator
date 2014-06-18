@@ -12,8 +12,8 @@ Install and use path /bank/emulator/demo in your web project.
 
 # Requirements
 
-- php >=5.3.0
-- Laravel Framework 4.1.*
+- php >=5.4.0
+- Laravel Framework >=4.1
 - MySQL Database
 - Laravel queue driver configuration
 - User auth identifier in your web project
@@ -39,13 +39,13 @@ Package dependency:
 
     {
         "require": {
-	        "php": ">=5.3.0",
-	        "laravel/framework": "4.1.*",
+	        "php": ">=5.4.0",
+	        "laravel/framework": ">=4.1",
 	        "iron-io/iron_mq": "dev-master"
             "fintech-fab/bank-emulator": "dev-master"
         },
 	    "require-dev": {
-		    "phpunit/phpunit": "3.7.*",
+		    "phpunit/phpunit": "4.3.*@dev",
 		    "mockery/mockery": "dev-master"
 	    },
     }
